@@ -20,15 +20,14 @@ import { insertGtmScript } from '../tracking/gtm';
 import { BUGSNAG_API_KEY } from '../constants/environment';
 import { createGAOptout } from '../tracking/ga_optout';
 import { activateErrorBoundaryComponent } from '../components/ErrorBoundary';
+import { PathList } from '../constants/path_list';
+import { ThemeProvider } from '../theme/ThemeContext';
 
+import 'prismjs/themes/prism-okaidia.css';
 import '../common_styles/foundation.css';
 import '../common_styles/site_specific.css';
 import './variables.css';
-
-import 'prismjs/themes/prism-okaidia.css';
-
-import styles from './app.module.css';
-import { PathList } from '../constants/path_list';
+import './app.page.css';
 
 const BLUE_600 = '#003760';
 const MAIN_COLOR = BLUE_600;
@@ -58,39 +57,41 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         <link rel="alternate" type="application/atom+xml" href={PathList.Feed} title={SITE_TITLE} />
         {!gaOptout.enabled() && insertGtmScript(GTM_ID)}
       </Head>
-      <header className={styles['site-header']}>
-        <h1 className={styles['site-title']}>
-          <Link href={PathList.Root} passHref>
-            <a>{SITE_TITLE}</a>
-          </Link>
-        </h1>
-        {isDisplayedDescription && <p className={styles['site-description']}>{SITE_DESCRIPTION}</p>}
-      </header>
-      <Component {...pageProps} />
-      <footer className={styles['site-footer']}>
-        <div className={styles['site-links']}>
-          <p>
+      <ThemeProvider>
+        <header className="site-header">
+          <h1 className="site-title">
             <Link href={PathList.Root} passHref>
               <a>{SITE_TITLE}</a>
             </Link>
+          </h1>
+          {isDisplayedDescription && <p className="site-description">{SITE_DESCRIPTION}</p>}
+        </header>
+        <Component {...pageProps} />
+        <footer className="site-footer">
+          <div className="site-links">
+            <p>
+              <Link href={PathList.Root} passHref>
+                <a>{SITE_TITLE}</a>
+              </Link>
+            </p>
+            <ul className="site-navigation">
+              <li>
+                <Link href={PathList.Feed}>
+                  <a>フィード</a>
+                </Link>
+              </li>
+              <li>
+                <Link href={PathList.Policy}>
+                  <a>ポリシー</a>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <p className="site-copyright">
+            <small>© {AUTHOR}</small>
           </p>
-          <ul className={styles['site-navigation']}>
-            <li>
-              <Link href={PathList.Feed}>
-                <a>フィード</a>
-              </Link>
-            </li>
-            <li>
-              <Link href={PathList.Policy}>
-                <a>ポリシー</a>
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <p className={styles.copyright}>
-          <small>© {AUTHOR}</small>
-        </p>
-      </footer>
+        </footer>
+      </ThemeProvider>
     </>
   );
 
