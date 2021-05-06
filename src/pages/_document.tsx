@@ -4,6 +4,7 @@ import { BASE_LANGUAGE, FACEBOOK_APP_ID } from '../constants/site_data';
 import { GTM_ID } from '../tracking/gtm_id';
 import { createGAOptout } from '../tracking/ga_optout';
 import { insertGtmNoscript } from '../tracking/gtm';
+import { ThemeColorDetection } from '../theme/ThemeColorDetection';
 
 type Props = {
   styles: JSX.Element;
@@ -35,6 +36,7 @@ export default class MyDocument extends Document<Props> {
         <body>
           {!gaOptout.enabled() && insertGtmNoscript(GTM_ID)}
           <script dangerouslySetInnerHTML={{ __html: sdkInitialScript }} />
+          <ThemeColorDetection />
           <Main />
           <NextScript />
         </body>
